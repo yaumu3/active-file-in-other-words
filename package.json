@@ -1,7 +1,7 @@
 {
   "name": "active-file-in-other-words",
   "displayName": "active-file-in-other-words",
-  "description": "This extension will show the active file's description to the status bar.",
+  "description": "This extension will show the active file's alias to the status bar. You can also refer to its description by push the item.",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.68.0"
@@ -10,17 +10,10 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:active-file-in-other-words.helloWorld"
+    "*"
   ],
   "main": "./out/extension.js",
-  "contributes": {
-    "commands": [
-      {
-        "command": "active-file-in-other-words.helloWorld",
-        "title": "Hello World"
-      }
-    ]
-  },
+  "contributes": {},
   "scripts": {
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
