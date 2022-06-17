@@ -3,6 +3,12 @@
   "displayName": "Active file in other words",
   "description": "This extension will show the active file's alias to the status bar. You can also refer to its description by selecting the item.",
   "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yaumu3/active-file-in-other-words.git"
+  },
+  "homepage": "https://github.com/yaumu3/active-file-in-other-words",
+  "license": "MIT",
   "engines": {
     "vscode": "^1.68.0"
   },
