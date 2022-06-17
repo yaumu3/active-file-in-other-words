@@ -46,6 +46,15 @@
           "default": []
         }
       }
+    },
+    "views": {
+      "explorer": [
+        {
+          "type": "webview",
+          "id": "active-file-in-other-words.descriptionView",
+          "name": "Description"
+        }
+      ]
     }
   },
   "scripts": {
