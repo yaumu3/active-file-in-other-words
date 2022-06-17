@@ -35,8 +35,7 @@ function loadMapsFromConfiguration(): [Map<string, string>, Map<string, string>]
     const aliasMap = new Map<string, string>();
     const descriptionMap = new Map<string, string>();
     const config = vscode.workspace.getConfiguration("active-file-in-other-words");
-    const maps = config.get<MapEntry[]>('maps');
-    if (maps === undefined) { return [aliasMap, descriptionMap]; }
+    const maps = config.get<MapEntry[]>('maps') || [];
 
     for (let map of maps) {
         aliasMap.set(map.baseName, map.alias);
