@@ -2,7 +2,8 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 
 export function activate({ subscriptions }: vscode.ExtensionContext) {
-    const [aliasMap, descriptionMap] = loadMapsFromConfiguration();
+    const aliasMap = new Map<string, string>();
+    const descriptionMap = new Map<string, string>();
 
     // Register a command that is invoked when the status bar item is selected
     const showDescriptionCommandId = 'active-file-in-other-words.showActiveFileDescription';
@@ -17,23 +18,26 @@ export function activate({ subscriptions }: vscode.ExtensionContext) {
     fileAliasStatusBarItem.command = showDescriptionCommandId;
     subscriptions.push(fileAliasStatusBarItem);
 
-    const updateStatusBarItemWithActiveFileAlias = () => updateStatuBarItem(aliasMap, fileAliasStatusBarItem);
+    const reloadMaps = () => reloadMapsFromConfiguration(aliasMap, descriptionMap);
+    const updateStatusBar = () => updateStatuBarItem(aliasMap, fileAliasStatusBarItem);
 
-    // Register some listener that make sure the status bar item always up-to-date.
-    // TODO: Rebuild descriptionMap, aliasMap and updater when some configurations are changed
-    subscriptions.push(vscode.window.onDidChangeActiveTextEditor(updateStatusBarItemWithActiveFileAlias));
+    // Register an event listener that make sure the maps always up-to-date.
+    subscriptions.push(vscode.workspace.onDidChangeConfiguration(reloadMaps));
+    // Register an event listener that make sure the status bar item always up-to-date.
+    subscriptions.push(vscode.window.onDidChangeActiveTextEditor(updateStatusBar));
 
     // Update once at start
-    updateStatusBarItemWithActiveFileAlias();
+    reloadMaps();
+    updateStatusBar();
 }
 
 interface MapEntry {
     baseName: string, alias: string, description: string
 }
 
-function loadMapsFromConfiguration(): [Map<string, string>, Map<string, string>] {
-    const aliasMap = new Map<string, string>();
-    const descriptionMap = new Map<string, string>();
+function reloadMapsFromConfiguration(aliasMap: Map<string, string>, descriptionMap: Map<string, string>) {
+    aliasMap.clear();
+    descriptionMap.clear();
     const config = vscode.workspace.getConfiguration("active-file-in-other-words");
     const maps = config.get<MapEntry[]>('maps') || [];
 
@@ -41,7 +45,6 @@ function loadMapsFromConfiguration(): [Map<string, string>, Map<string, string>]
         aliasMap.set(map.baseName, map.alias);
         descriptionMap.set(map.baseName, map.description);
     }
-    return [aliasMap, descriptionMap];
 }
 
 function updateStatuBarItem(aliasMap: Map<string, string>, statusBarItem: vscode.StatusBarItem): void {
