@@ -1,7 +1,7 @@
 {
   "name": "active-file-in-other-words",
-  "displayName": "active-file-in-other-words",
-  "description": "This extension will show the active file's alias to the status bar. You can also refer to its description by push the item.",
+  "displayName": "Active file in other words",
+  "description": "This extension will show the active file's alias to the status bar. You can also refer to its description by selecting the item.",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.68.0"
@@ -13,7 +13,41 @@
     "*"
   ],
   "main": "./out/extension.js",
-  "contributes": {},
+  "contributes": {
+    "configuration": {
+      "title": "Active file in other words",
+      "properties": {
+        "active-file-in-other-words.maps": {
+          "type": "array",
+          "description": "Define maps between file's base name and alias/description.",
+          "items": {
+            "type": "object",
+            "title": "Map item",
+            "required": [
+              "baseName",
+              "alias",
+              "description"
+            ],
+            "properties": {
+              "baseName": {
+                "type": "string",
+                "description": "A Target file's base name"
+              },
+              "alias": {
+                "type": "string",
+                "description": "Alias of the target file"
+              },
+              "description": {
+                "type": "string",
+                "description": "Description of the target file"
+              }
+            }
+          },
+          "default": []
+        }
+      }
+    }
+  },
   "scripts": {
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
